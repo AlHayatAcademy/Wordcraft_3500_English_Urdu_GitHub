@@ -1,6 +1,6 @@
 # Wordcraft — Newspaper English
 
-A colourful, responsive vocabulary-learning website containing **3,500 words (1,000 Intermediate, 1,500 Advanced, 1,000 Challenging)** and **3,000 expressions (1,000 phrasal/multiword verbs, 1,000 idioms, 1,000 collocations)**, English and Urdu meanings, examples, pronunciation, quizzes, scheduled review, newspaper excerpts, sentence writing and speaking practice.
+A colourful, responsive vocabulary-learning website containing **5,521 words (200 optional Foundation, 1,751 Intermediate, 2,304 Advanced, 1,266 Challenging)** and **3,000 expressions (1,000 phrasal/multiword verbs, 1,000 idioms, 1,000 collocations)**, English and Urdu meanings, examples, pronunciation, quizzes, scheduled review, newspaper excerpts, sentence writing and speaking practice.
 
 ## GitHub Pages deployment
 
@@ -26,12 +26,22 @@ python -m http.server 8000
 
 Then open `http://localhost:8000/`. Python is needed only for this optional local preview, not for GitHub deployment.
 
+## Visual design
+
+The redesigned UI uses illustrated violet banners, golden action buttons, teal Intermediate, orange Advanced and purple Challenging cards, colourful recall feedback, responsive layouts and a complete dark theme. Streaks and progress reflect browser-local activity. Learning-path pages show 12 units at a time. Illustration: original AI-generated Wordcraft hero, bundled locally; no image API is needed to run the site.
+
+## Interactive learning cards
+
+Each word and expression has Learn, Examples, Practise, Writing and Speaking tabs, with differently coloured components, pronunciation controls and a sentence notebook. Four blanks practise English meaning recall, Urdu-to-English recall, sentence completion and word combinations. Each offers Check, Hint and Reveal, with a Check all button. Only an unassisted first recall answer updates the review schedule; hinted/revealed answers do not count as independent recall. Answers accept capitalization and extra spaces, but blanks expect the displayed target form rather than arbitrary paraphrases.
+
+Choose a news, everyday conversation or formal-writing scenario, write your own sentence, use the self-review checklist, listen to it and save it. These checks guide practice; they do not claim automatic grammar or meaning assessment. Previous/Next stays within the same level.
+
 ## Learning activities
 
 - Learning path: ten-word units, gradual intermediate → advanced → challenging progression; any unit can be explored. A unit is practised when every word has been introduced and answered correctly at least once.
 - Library: search English or Urdu; filter learning level, word type, category, publisher and progress.
 - Expression studio: English/Urdu meanings, contextual explanations, construction and tone guidance, original examples, pronunciation, recall questions, bookmarks and sentence notebook.
-- Urdu meanings: all 3,500 primary learning meanings in Urdu with English beside them; RTL text and Nastaliq font preference.
+- Urdu meanings: all 5,521 primary learning meanings in Urdu with English beside them; RTL text and Nastaliq font preference.
 - Daily lesson: recall first, reveal meaning and example, then rate your recall.
 - Practice: meaning multiple choice, contextual gaps, recall/spelling and listening/spelling.
 - Usage explorer: selected retained words with multiple original contextual examples, Urdu explanations, collocations and usage tips.
@@ -39,6 +49,22 @@ Then open `http://localhost:8000/`. Python is needed only for this optional loca
 - Sentence studio: your own writing, word-use checks, punctuation hints, a saved notebook and optional voice recording.
 - Progress: scheduled review, bookmarks, activity history, export/restore and vocabulary TSV export.
 - Light/dark themes, mobile layouts and offline caching after an initial connected visit.
+
+## Word families and explained collocations
+
+`family-lessons.json` enriches every card with available family definitions from the existing bank, direct WordNet derivational/pertainym links, and reviewed original lessons for 91 useful roots (also reused on existing sibling headwords). Members show part of speech, meaning, Urdu where supplied, a sourced or original example where available, audio buttons and a practice blank. Larger families expand behind a labelled control. Different senses and spelling variants remain distinct; plural and verb inflections are not generated as new family members. Some dictionary entries lack an example or Urdu translation; the UI identifies missing examples rather than inventing sentences. This is a documented family collection, not an exhaustive list of every possible derived word.
+
+Explained collocations reuse the existing 1,000-entry studio and 364 reviewed additional combinations/constructions. Meanings, Urdu and original examples accompany each explanation. Unexpanded legacy combinations remain labelled separately; no claim of measured newspaper frequency is made. “Respectively” includes constructions that map parallel lists, with explicit distinctions from respectful and respectable. The review and coverage counts are in `family-review.json`; repeated placements on different root cards are not unique collocations.
+
+Writing provides context choices, sentence/paragraph drafts, basic target/capital/punctuation checks, text-to-speech and notebook saving. Drafts persist during the session; saved sentences persist in backups. Speaking provides listen/repeat practice, register guidance, a 60-second response timer and self-review checklist. It activates no microphone; the existing Sentence studio remains available for local recording and playback. Neither tab automatically grades grammar, meaning, fluency or pronunciation.
+
+Optional content rebuilding: `python3 scripts/build-family-lessons.py /absolute/path/to/wordnet.zip`. Supply Princeton WordNet 3.0; no Python or dictionary download is required to run or deploy the already compiled site.
+
+## Imported vocabulary review
+
+The supplied `al-hayat-aptitudeprep-main/data/vocabulary-bank.json` contains 2,999 unique words. We added 2,021 missing words and skipped 978 existing words, comparing case-insensitively after collapsing whitespace. Existing entries and progress IDs were preserved; new IDs are 6117–8137. The original three levels remain the default learning route; 200 imported Foundation words are optional.
+
+All imported entries received an editorial review of meanings, Urdu, part of speech, example sense, synonyms, antonyms, collocations and genuine word families. Source review flags were not accepted as evidence. Unsuitable opposites and unrelated families were removed; empty lists have explanatory notes rather than invented items. Machine-generated IPA was excluded. Imported examples are labelled separately from newspaper quotations and WordNet examples. Source claims remain unverified unless explicitly documented in the review. `import-review.json` contains the review record; `import-audit.csv` records each added word and changed fields. No licence was supplied for the imported bank; its inclusion does not establish third-party reuse rights.
 
 ## Source methodology
 
@@ -53,7 +79,7 @@ The original newspaper-observed collection is drawn from an accessible sample of
 
 The sample contains approximately 94,902 extracted text tokens. Some retrieved articles contain only partial text. This is **not an exhaustive scan of every newspaper edition**, and the ranks are **sample frequencies**, not a proven ranking of the most frequent English words worldwide or of the complete DAWN archive.
 
-Rank first considers article prevalence, then total occurrences. Common grammatical words, proper names, abbreviations and retrieval noise were filtered. Inflections were partly grouped; entries represent written words rather than strictly 3,500 independent word families. `count` and `articles` reflect the retrieved sample and automated processing.
+Rank first considers article prevalence, then total occurrences. Common grammatical words, proper names, abbreviations and retrieval noise were filtered. Inflections were partly grouped; entries represent written words rather than strictly independent word families. `count` and `articles` reflect the retrieved sample and automated processing.
 
 Princeton WordNet 3.0 supplies dictionary meanings and reusable examples. Original learning definitions and examples correct many unsuitable first senses and fill gaps. Urdu meanings have been written for each primary learning meaning. Selected words have additional contextual Urdu in Usage explorer.
 
@@ -78,9 +104,16 @@ The static site does not scrape or automatically fetch new newspaper articles. U
 | File | Purpose |
 |---|---|
 |`index.html`|Application shell|
-|`style.css`|Responsive design and Urdu styles|
+|`style.css`|Base responsive design and Urdu styles|
+|`design.css`|Vibrant theme, mobile and dark-mode overrides|
+|`design.js`|Redesigned home, learning path and page banners|
+|`cards.js`, `cards.css`|Colour-coded cards, four blank exercises and functional writing|
+|`family-lessons.json`, `family-authored.json`, `family-review.json`|Expanded families, explained combinations and provenance|
+|`scripts/build-family-lessons.py`|Optional content-generation script|
+|`import-review.json`, `import-audit.csv`|Import provenance, editorial review and added-word audit|
+|`assets/wordcraft-hero.png`|Bundled hero illustration|
 |`app.js`|Learning screens, quizzes, progress and export/restore|
-|`data.json`|3,500 levelled entries, explanations, collocations and guidance|
+|`data.json`|5,521 levelled entries, explanations, collocations and guidance|
 |`enhancements.js`|Learning path, expression studio and optional audio feedback|
 |`expressions.json`|3,000 detailed expression lessons|
 |`sources.json`|Publisher links, dates and short excerpts|
@@ -115,8 +148,8 @@ node tests/qa.cjs
 ```
 
 
-Checks: JavaScript syntax, all 3,500 unique words and 3,000 unique expressions, exact level/type counts, nonempty English/Urdu meanings and examples, source indexes, quotation budgets, all 12 view-rendering paths, quiz correct/incorrect paths, context/spelling/listening flow, review scheduling, bookmarks, expression quizzes and backup/restore, ten-word unit scope, muted audio fallback, sentence saving/deduplication, usage quizzes and RTL word details. Verification used a DOM simulation; live browser visual QA, sound effects, speech and microphone operation were not available in the authoring environment and should be checked on your device.
+Checks: JavaScript syntax, all 5,521 unique words and 3,000 unique expressions, exact level/type counts, imported words in search/lessons/quizzes, new-ID backup restore, four blanks per entry, assisted-answer handling, Writing/Speaking tabs, family recall marking, timer completion, draft retention, unique card field IDs, nonempty English/Urdu meanings and examples, source indexes, quotation budgets, all 12 view-rendering paths, quiz correct/incorrect paths, context/spelling/listening flow, review scheduling, bookmarks, expression quizzes and backup/restore, ten-word unit scope, 12-unit path pagination, real-activity streaks, redesigned home markup, muted audio fallback, sentence saving/deduplication, usage quizzes and RTL word details. Verification used a DOM simulation; live browser visual QA, sound effects, speech and microphone operation were not available in the authoring environment and should be checked on your device.
 
 ## Rights
 
-Original application code and original learning contributions use the accompanying MIT licence. Third-party dictionary content uses the WordNet licence included in `WORDNET_LICENSE.txt` and `meta.json`. Publisher excerpts remain subject to their respective rights. This project is not affiliated with the publishers or the reviewed learning platforms.
+Original application code and original learning contributions use the accompanying MIT licence. Third-party dictionary content uses the WordNet licence included in `WORDNET_LICENSE.txt` and `meta.json`. Imported bank content retains its original rights; no licence was supplied in the attachment, so the MIT licence does not extend to it. Publisher excerpts remain subject to their respective rights. This project is not affiliated with the publishers or the reviewed learning platforms.
